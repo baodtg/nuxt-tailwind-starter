@@ -9,6 +9,9 @@ export default defineNuxtConfig({
          apiBase: '', // Or a default value
       }
    },
+   nitro: {
+      preset: 'node-server'
+   },
    typescript: {
       strict: true,
    },
