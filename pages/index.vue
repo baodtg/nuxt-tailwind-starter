@@ -17,6 +17,9 @@
 <script setup>
 const config = useRuntimeConfig();
 const counter = useCounter();
+const { getUser } = useUserRepository();
+const { data: user } = await useAsyncData("user", () => getUser("defunkt"));
+console.log(JSON.stringify(user.value));
 
 if (process.server) {
 	console.log("API secret:", config.apiSecret);

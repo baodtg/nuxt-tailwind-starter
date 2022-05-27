@@ -1,14 +1,8 @@
-import { Fetch } from "./useRepositories"
+export const useUserRepository = () => {
+   const { fetch } = useHttp();
 
-export const useUserRepository = (fetch: Fetch) => {
-
-   const getUser = () => {
-      return new Promise(resolve => {
-         resolve({
-            id: 1,
-            displayName: "Bao Dang"
-         })
-      })
+   const getUser = (username: string) => {
+      return fetch(`https://api.github.com/users/${username}`)
    }
 
    return {

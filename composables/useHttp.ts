@@ -1,11 +1,9 @@
 import type { FetchOptions } from "ohmyfetch"
 
-export type Fetch<ResponseType = unknown> = (url: string, options: FetchOptions) => Promise<ResponseType>
-
-export const useRepositories = () => {
+export const useHttp = () => {
    const headers = useState<HeadersInit>("header", () => ({}))
 
-   const fetch: Fetch = (url: string, options: FetchOptions) => {
+   const fetch = (url: string, options?: FetchOptions) => {
       return $fetch(url, {
          ...options,
          headers: headers.value
@@ -22,6 +20,5 @@ export const useRepositories = () => {
    return {
       fetch,
       setHeader,
-      userRepository: useUserRepository(fetch)
    }
 }
