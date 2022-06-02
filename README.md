@@ -17,7 +17,7 @@ $ yarn preview
 $ yarn generate
 ```
 
-## Deploy step to google cloud using cloud run
+## Deploy step to google cloud using cloud run 
 
 ```bash
 # Build app
