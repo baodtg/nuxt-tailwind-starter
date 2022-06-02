@@ -1,0 +1,68 @@
+# This config uses the `.circleci/extended/orb-test.yml` as its base, and then publishes the app to S3.
+# The workflow contained here demonstrates a practical application of `post-steps`
+# and using workspace persistence
+version: 2.1
+
+jobs:
+  build:
+    working_directory: ~/repo
+    docker:
+      - image: cimg/node:16.13.2
+    steps:
+      - checkout
+      - run:
+          name: Update NPM
+          command: "sudo npm install -g npm"
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - save_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: Build App
+          command: npm run build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  deploy:
+    working_directory: ~/repo
+    docker:
+      - image: amazon/aws-cli:2.7.5
+    parameters:
+      bucket:
+        type: string
+    steps:
+      - checkout
+      - run:
+          name: Install tar utility
+          command: |
+            yum install -y tar gzip
+      - attach_workspace:
+          at: .
+      - run:
+          name: Deploy to S3
+          command: aws s3 sync ./.output/ s3://<< parameters.bucket >>
+    
+
+# Invoke jobs via workflows
+# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+workflows:
+  Deploy: # Make a workflow to build and deploy your project
+     jobs:
+       - build:
+          filters:
+             branches:
+               only: circleci-project-setup # Only deploy when the commit is on the Main branch
+       - deploy:
+           bucket: $AWS_S3_BUCKET_NAME
+           requires:
+             - build # Only run deploy job once the build job has completed
+           filters:
+             branches:
+               only: circleci-project-setup # Only deploy when the commit is on the Main branch
+
