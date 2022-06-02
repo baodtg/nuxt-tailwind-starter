@@ -12,16 +12,8 @@ orbs:
   # See the orb documentation here: https://circleci.com/developer/orbs/orb/circleci/aws-s3
   # NOTE: Environment variables containing the necessary secrets can be setup in the CircleCI UI
   # See here https://circleci.com/docs/2.0/env-vars/#setting-an-environment-variable-in-a-project
-  aws-cli: circleci/aws-cli@3.1.1
 
 jobs:
-  aws-cli-cred-setup:
-    executor: aws-cli/default
-    steps:
-      - aws-cli/setup:
-          aws-access-key-id: AWS_ACCESS_KEY
-          aws-secret-access-key: AWS_ACCESS_SECRET
-          aws-region: AWS_REGION_NAME
   build:
     working_directory: ~/repo
     docker:
