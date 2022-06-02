@@ -18,6 +18,9 @@ jobs:
     working_directory: ~/repo
     docker:
       - image: circleci/node:16.14.2-browsers
+        auth:
+          username: mydockerhub-user  # can specify string literal values
+          password: DOCKERHUB_PASSWORD  # or project environment 
     steps:
       - checkout
       - run:
@@ -43,6 +46,9 @@ jobs:
     working_directory: ~/repo
     docker:
       - image: amazon/aws-cli:2.7.5
+        auth:
+          username: mydockerhub-user  # can specify string literal values
+          password: DOCKERHUB_PASSWORD  # or project environment 
     steps:
       - attach_workspace:
           at: .
