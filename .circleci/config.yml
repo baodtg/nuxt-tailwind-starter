@@ -19,8 +19,8 @@ jobs:
     docker:
       - image: circleci/node:16.14.2-browsers
         auth:
-          username: baodtg  # can specify string literal values
-          password: $DOCKERHUB_PASSWORD  # or project environment 
+          username: baodtg
+          password: DOCKERHUB_PASSWORD
     steps:
       - checkout
       - run:
@@ -47,8 +47,8 @@ jobs:
     docker:
       - image: amazon/aws-cli:2.7.5
         auth:
-          username: baodtg  # can specify string literal values
-          password: $DOCKERHUB_PASSWORD  # or project environment 
+          username: baodtg
+          password: DOCKERHUB_PASSWORD
     steps:
       - attach_workspace:
           at: .
