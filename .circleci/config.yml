@@ -52,9 +52,12 @@ jobs:
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  Deploy To S3: # Make a workflow to build and deploy your project
+  Deploy: # Make a workflow to build and deploy your project
      jobs:
-       - build
+       - build:
+          filters:
+             branches:
+               only: circleci-project-setup # Only deploy when the commit is on the Main branch
        - deploy:
            bucket: $AWS_S3_BUCKET_NAME
            requires:
