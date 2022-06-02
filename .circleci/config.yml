@@ -48,8 +48,8 @@ jobs:
     docker:
       - image: amazon/aws-cli:2.7.5
     steps:
-      - attach_workspace:
-          at: .
+      - restore_cache:
+          key: app-build-cache-{{ .Branch }}
       - run:
           name: Deploy to S3
           command: aws s3 sync ./.output/ s3://test-nuxt-with-circle-ci
