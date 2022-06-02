@@ -35,10 +35,6 @@ jobs:
       - run:
           name: Build App
           command: npm run build
-      - save_cache:
-          key: app-build-cache-{{ .Branch }}
-          paths:
-            - ./.output
       - persist_to_workspace:
           root: .
           paths:
@@ -48,8 +44,8 @@ jobs:
     docker:
       - image: amazon/aws-cli:2.7.5
     steps:
-      - restore_cache:
-          key: app-build-cache-{{ .Branch }}
+      - attach_workspace:
+          at: .
       - run:
           name: Deploy to S3
           command: aws s3 sync ./.output/ s3://test-nuxt-with-circle-ci
