@@ -3,28 +3,24 @@
 # and using workspace persistence
 version: 2.1
 
+orbs: 
+  node: circleci/node@5.0.2
+
 jobs:
   build:
     working_directory: ~/repo
-    docker:
-      - image: cimg/node:16.13.2
+    executor:
+      name: node/default
+      tag: '16'
     steps:
       - checkout
+      - node/install-packages:
+          check-cache: always
+          pkg-manager: yarn-berry
+          with-cache: false
       - run:
-          name: Update NPM
-          command: "sudo npm install -g npm"
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
-      - run:
-          name: Install Dependencies
-          command: npm install
-      - save_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
-          paths:
-            - ./node_modules
-      - run:
-          name: Build App
-          command: npm run build
+          name: Build app
+          command: yarn build
       - persist_to_workspace:
           root: .
           paths:
